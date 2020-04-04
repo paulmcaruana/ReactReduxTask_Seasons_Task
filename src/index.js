@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import SeasonDisplay from './SeasonDisplay';
+import Spinner from './spinner';
 
 class App extends React.Component {                     //changed from a functional app component in last commit
 
@@ -11,11 +12,9 @@ class App extends React.Component {                     //changed from a functio
             (position) => this.setState({ lat: position.coords.latitude}),
             (err) => this.setState({ errorMessage: err.message})
         );
-
     }
 
-    // React says we have to define render!!
-    render() {
+    renderContent() {                                           // helper method
         if (this.state.errorMessage && !this.state.lat){
             return <div>Error: {this.state.errorMessage}</div>;
         }
@@ -24,7 +23,15 @@ class App extends React.Component {                     //changed from a functio
             return <SeasonDisplay lat={this.state.lat}/>;
         }
 
-        return <div>Loading!</div>;
+        return <Spinner message="Please accept location request"/>;
+    }
+
+    render() {
+        return (
+            <div className="border red">
+                {this.renderContent()}
+            </div>
+        );
         
     }
 }
